@@ -9,9 +9,9 @@ import Combat
 import Animations
 import Spells
 
-client = commands.Bot(command_prefix=';')
+client = commands.Bot(command_prefix=',')
 
-# Discord Command Checks ----------------------------------------------------------------------------------------------
+# Discord Command Checks --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def guild_hall_check(ctx):
@@ -37,7 +37,7 @@ def accept_rules_cha_check(ctx):
 def not_in_combat(ctx):
     return not Player.get_player_combat_status(ctx.author.id)
 
-# Discord Members events ----------------------------------------------------------------------------------------------
+# Discord Members events --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 @client.event
@@ -45,10 +45,7 @@ async def on_ready():
     print(f'We have logged in as {client.user}.')
 
     print('Setting discord status...')
-    bot_activities = ['with player lives',
-                      'with a baby dragon',
-                      'poker with a wizard',
-                      'with the DEVs']
+    bot_activities = ['with player lives', 'with a baby dragon', 'poker with a wizard', 'with the DEVs']
     await client.change_presence(status=discord.Status.online, activity=discord.Game(random.choice(bot_activities)))
     print('Status set.')
     print('Bot READY.')
@@ -71,7 +68,7 @@ async def on_command_error(ctx, error):
         await msg.delete(delay=5)
 
 
-# Accepting Rules Command ---------------------------------------------------------------------------------------------
+# Accepting Rules Command -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 @client.command()
@@ -87,7 +84,7 @@ async def arules_error(ctx, error):
         print(f'Error at {ctx.message.channel.name}, {ctx.message}')
 
 
-# Moderator Commands --------------------------------------------------------------------------------------------------
+# Moderator Commands ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 @client.command()
@@ -133,7 +130,7 @@ async def delchan(ctx):
     await ctx.channel.delete()
 
 
-# Player Commands -----------------------------------------------------------------------------------------------------
+# Player Commands ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 """
 Max embedded length with thumbnail and image
@@ -177,10 +174,11 @@ async def show(ctx, *, arguments):
     if args == 'help' or args == '?':
         await ctx.send(';show inventory/inv for inventory\n'
                        ';show character sheet/charsheet/charactersheet/playersheet for your character stats')
+
     if args == 'inventory' or args == 'inv':
         await ctx.send(f'{ctx.author.mention}\'s inventory is currently empty!')
-    if args == 'character sheet' or args == 'charsheet' or args == 'charactersheet' or args == 'playersheet' \
-            or args == 'player sheet' or args == 'character':
+
+    if args == 'character sheet' or args == 'charsheet' or args == 'charactersheet' or args == 'playersheet' or args == 'player sheet' or args == 'character':
         playerEmbed: Embed = discord.Embed(
             color=discord.Color.gold()
         )
@@ -317,12 +315,7 @@ async def explore(ctx, *, arg):
     if arg.lower() == 'plains' or arg.lower() == 'grassland':
         currentCategory = discord.utils.get(ctx.guild.categories, name='Plains of Yllek')
 
-    if len(currentCategory.channels) == 0:
-        pathNum = 1
-    else:
-        pathNum = len(currentCategory.channels) + 1
-
-    newChannel = await ctx.guild.create_text_channel(name=f'Path {pathNum}',
+    newChannel = await ctx.guild.create_text_channel(name=f'path for {ctx.author.display_name}',
                                                      overwrites=overwrite, category=currentCategory)
 
     await Combat.combat_setup(ctx.author.id, newChannel.id, arg)
@@ -351,6 +344,8 @@ async def explore(ctx, *, arg):
     if Player.get_player_stat(ctx.author.id, 'level') < 61 and currentCategory.name == 'Plains of Yllek':
         await newChannel.send(f'{ctx.author.mention}, This area is out of your level range!\n'
                               f'Try to party up or leave to avoid death consequences!')
+
+    await newChannel.send('Usable commands during combat: ,run / ,show / ,use / ,cast')
 
     await Player.switch_player_status(ctx.author.id)
 
