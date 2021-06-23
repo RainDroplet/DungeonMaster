@@ -2,12 +2,12 @@ import discord
 from discord import Embed
 from discord.ext import commands
 import random
-import Player
 from os import path
 import asyncio
-import Combat
-import Animations
-import Spells
+from py_files import Player
+from py_files import Combat
+from py_files import Animations
+from py_files import Spells
 
 client = commands.Bot(command_prefix=',')
 
