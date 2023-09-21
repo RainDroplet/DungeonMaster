@@ -363,4 +363,4 @@ async def exit_combat(ctx):
 
 
 if __name__ == '__main__':
-    client.run('NzQxNDQ2NTMyNTczODIyOTg2.Xy3r5A.JULP819OgjtzVl5plbTH3ocF8Bc')
+    client.run([TOKEN HERE])
